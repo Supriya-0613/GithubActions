@@ -1,2 +1,2 @@
-# Basic Python Program - Version 1
-print("Hello, World!")
+# Basic Python Program - Version 2
+print("Hello, Git versioning!")
