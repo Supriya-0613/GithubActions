@@ -1,0 +1,54 @@
+app.py
+
+def is_palindrome(word):
+    return word == word[::-1]
+
+if __name__ == "__main__":
+    word = input("Enter a word: ")
+    print("Palindrome" if is_palindrome(word) else "Not Palindrome")
+
+testapp.py
+
+from app import is_palindrome
+
+def test_palindrome():
+    assert is_palindrome("madam")
+    assert is_palindrome("racecar")
+    assert not is_palindrome("hello")
+    assert not is_palindrome("python")
+
+requirements.txt
+
+pytest
+
+
+Docker
+
+FROM python:3.10-slim
+
+WORKDIR /app
+COPY . .
+RUN pip install -r requirements.txt
+
+CMD ["python", "app.py"]
+
+ci.yml
+
+name: CI/CD
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - run: pip install -r requirements.txt
+      - run: pytest
+      - run: docker build -t palindrome-app .
+
